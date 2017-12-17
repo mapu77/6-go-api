@@ -2,8 +2,8 @@ package flights
 
 import (
 	"gopkg.in/mgo.v2/bson"
-	"gopkg.in/mgo.v2"
 	"log"
+	"github.com/mapu77/AD-Labs/6-go-api/database"
 )
 
 type Flight struct {
@@ -19,13 +19,8 @@ type Flight struct {
 // Make a Flight persistent and return its unique identifier as a string.
 // If any error occurs, returns error code in err return value. It is nil otherwise.
 func Persist(f *Flight) (string, error) {
-	session, err := mgo.Dial("localhost:27017")
-	if err != nil {
-		log.Fatal(err)
-	}
+	session, err := database.GetMongoDBSession()
 	defer session.Close()
-
-	session.SetMode(mgo.Monotonic, true)
 
 	c := session.DB("ad-travel-agency").C("flights")
 	err = c.Insert(&f)
@@ -40,14 +35,10 @@ func Persist(f *Flight) (string, error) {
 	return result["_id"].Hex(), err
 }
 
+// Returns the flights matching the parameters, if any. Errors are returned in error second return value.
 func ListBy(code string, company string, departureCity string, arrivalCity string) ([]Flight, error) {
-	session, err := mgo.Dial("localhost:27017")
-	if err != nil {
-		log.Fatal(err)
-	}
+	session, err := database.GetMongoDBSession()
 	defer session.Close()
-
-	session.SetMode(mgo.Monotonic, true)
 
 	c := session.DB("ad-travel-agency").C("flights")
 	var args = bson.M{}
