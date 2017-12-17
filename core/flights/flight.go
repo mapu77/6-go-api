@@ -10,10 +10,10 @@ type Flight struct {
 	Id            bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Code          string        `json:"code"`
 	Company       string        `json:"company"`
-	DepartureTime string        `json:"departure_time"`
-	DepartureCity string        `json:"departure_city"`
-	ArrivalTime   string        `json:"arrival_time"`
-	ArrivalCity   string        `json:"arrival_city"`
+	DepartureTime string        `json:"departure_time" bson:"departure_time"`
+	DepartureCity string        `json:"departure_city" bson:"departure_city"`
+	ArrivalTime   string        `json:"arrival_time" bson:"arrival_time"`
+	ArrivalCity   string        `json:"arrival_city" bson:"arrival_city"`
 }
 
 // Make a Flight persistent and return its unique identifier as a string.
@@ -48,11 +48,11 @@ func ListBy(code string, company string, departureCity string, arrivalCity strin
 	if company != "" {
 		args["company"] = company
 	}
-	if company != "" {
-		args["departureCity"] = departureCity
+	if departureCity != "" {
+		args["departure_city"] = departureCity
 	}
-	if company != "" {
-		args["arrivalCity"] = arrivalCity
+	if arrivalCity != "" {
+		args["arrival_city"] = arrivalCity
 	}
 	var flights []Flight
 	err = c.Find(args).Sort("_id").All(&flights)
