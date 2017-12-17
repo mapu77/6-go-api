@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"github.com/mapu77/AD-Labs/6-go-api/core/flights"
+	"fmt"
 )
 
 type Route struct {
@@ -18,6 +19,14 @@ const apiVersion = "/v1"
 type Routes []Route
 
 var routes = Routes{
+	Route{
+		"HelloWorld",
+		"GET",
+		"/",
+		func(writer http.ResponseWriter, request *http.Request) {
+			fmt.Fprintln(writer, "HelloWorld!")
+		},
+	},
 	Route{
 		"NewFlight",
 		"POST",

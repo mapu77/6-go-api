@@ -10,5 +10,5 @@ func main() {
 
 	router := routes.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":5000", router))
+	log.Fatal(http.ListenAndServe(":80", router))
 }
