@@ -1,13 +1,13 @@
-package flights
+package hotels
 
 import (
 	"net/http"
-	"encoding/json"
 	"log"
+	"encoding/json"
 )
 
-func NewFlight(w http.ResponseWriter, r *http.Request) {
-	var f Flight
+func NewHotel(w http.ResponseWriter, r *http.Request) {
+	var f Hotel
 	var err error
 	err = json.NewDecoder(r.Body).Decode(&f)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -25,27 +25,23 @@ func NewFlight(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(201)
 }
 
-func ListFlights(w http.ResponseWriter, r *http.Request) {
+func ListHotels(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
-	var code string
-	if len(params["code"]) > 0 {
-		code = params["code"][0]
+	var name string
+	if len(params["name"]) > 0 {
+		name = params["name"][0]
 	}
-	var company string
-	if len(params["company"]) > 0 {
-		company = params["company"][0]
+	var hotelChain string
+	if len(params["hotelChain"]) > 0 {
+		hotelChain = params["hotelChain"][0]
 	}
-	var departureCity string
-	if len(params["departureCity"]) > 0 {
-		departureCity = params["departureCity"][0]
+	var city string
+	if len(params["city"]) > 0 {
+		city = params["city"][0]
 	}
-	var arrivalCity string
-	if len(params["arrivalCity"]) > 0 {
-		arrivalCity = params["arrivalCity"][0]
-	}
-	var flights *[]Flight
+	var flights []Hotel
 	var err error
-	flights, err = ListBy(code, company, departureCity, arrivalCity)
+	flights, err = ListBy(name, hotelChain, city)
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)
@@ -62,17 +58,17 @@ func ListFlights(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ListFlightDestinations(w http.ResponseWriter, r *http.Request) {
-	var destinations *[]string
+func ListHotelChains(w http.ResponseWriter, r *http.Request) {
+	var hotelChains *[]string
 	var err error
-	destinations, err = ListDestinations()
+	hotelChains, err = ListChains()
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(w).Encode(destinations)
+	err = json.NewEncoder(w).Encode(hotelChains)
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)
@@ -82,17 +78,17 @@ func ListFlightDestinations(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ListFlightCompanies(w http.ResponseWriter, r *http.Request) {
-	var companies *[]string
+func ListHotelCities(w http.ResponseWriter, r *http.Request) {
+	var cities *[]string
 	var err error
-	companies, err = ListCompanies()
+	cities, err = ListCities()
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err = json.NewEncoder(w).Encode(companies)
+	err = json.NewEncoder(w).Encode(cities)
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)

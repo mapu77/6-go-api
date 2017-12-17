@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"github.com/mapu77/AD-Labs/6-go-api/core/flights"
 	"fmt"
+	"github.com/mapu77/AD-Labs/6-go-api/core/hotels"
 )
 
 type Route struct {
@@ -39,16 +40,40 @@ var routes = Routes{
 		baseUrl + apiVersion + "/flights",
 		flights.ListFlights,
 	},
-	//Route{
-	//	"NewHotel",
-	//	"POST",
-	//	baseUrl + apiVersion + "/hotels",
-	//	hotels.NewHotel,
-	//},
-	//Route{
-	//	"GetHotels",
-	//	"GET",
-	//	baseUrl + apiVersion + "/hotels",
-	//	hotels.ListHotels,
-	//},
+	Route{
+		"GetFlightDestinations",
+		"GET",
+		baseUrl + apiVersion + "/flights/destinations",
+		flights.ListFlightDestinations,
+	},
+	Route{
+		"GetFlightCompanies",
+		"GET",
+		baseUrl + apiVersion + "/flights/companies",
+		flights.ListFlightCompanies,
+	},
+	Route{
+		"NewHotel",
+		"POST",
+		baseUrl + apiVersion + "/hotels",
+		hotels.NewHotel,
+	},
+	Route{
+		"GetHotels",
+		"GET",
+		baseUrl + apiVersion + "/hotels",
+		hotels.ListHotels,
+	},
+	Route{
+		"GetHotelChains",
+		"GET",
+		baseUrl + apiVersion + "/hotels/chains",
+		hotels.ListHotelChains,
+	},
+	Route{
+		"GetHotelCities",
+		"GET",
+		baseUrl + apiVersion + "/hotels/cities",
+		hotels.ListHotelCities,
+	},
 }

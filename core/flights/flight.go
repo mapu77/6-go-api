@@ -36,7 +36,7 @@ func Persist(f *Flight) (string, error) {
 }
 
 // Returns the flights matching the parameters, if any. Errors are returned in error second return value.
-func ListBy(code string, company string, departureCity string, arrivalCity string) ([]Flight, error) {
+func ListBy(code string, company string, departureCity string, arrivalCity string) (*[]Flight, error) {
 	session, err := database.GetMongoDBSession()
 	defer session.Close()
 
@@ -56,5 +56,5 @@ func ListBy(code string, company string, departureCity string, arrivalCity strin
 	}
 	var flights []Flight
 	err = c.Find(args).Sort("_id").All(&flights)
-	return flights, err
+	return &flights, err
 }
