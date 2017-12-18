@@ -3,7 +3,6 @@ package routes
 import (
 	"net/http"
 	"github.com/mapu77/AD-Labs/6-go-api/core/flights"
-	"fmt"
 	"github.com/mapu77/AD-Labs/6-go-api/core/hotels"
 )
 
@@ -24,8 +23,8 @@ var routes = Routes{
 		"HelloWorld",
 		"GET",
 		"/",
-		func(writer http.ResponseWriter, request *http.Request) {
-			fmt.Fprintln(writer, "HelloWorld!")
+		func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "https://app.swaggerhub.com/apis/mapu77/ad-go-api/1.0.0", 303)
 		},
 	},
 	Route{
