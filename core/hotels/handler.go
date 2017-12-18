@@ -12,17 +12,17 @@ func NewHotel(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&f)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if err != nil {
-		w.WriteHeader(400)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	var id = make(map[string]string)
 	id["id"], err = Persist(&f)
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	json.NewEncoder(w).Encode(id)
-	w.WriteHeader(201)
+	w.WriteHeader(http.StatusCreated)
 }
 
 func ListHotels(w http.ResponseWriter, r *http.Request) {
@@ -44,17 +44,17 @@ func ListHotels(w http.ResponseWriter, r *http.Request) {
 	flights, err = ListBy(name, hotelChain, city)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(flights)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -64,17 +64,17 @@ func ListHotelChains(w http.ResponseWriter, r *http.Request) {
 	hotelChains, err = ListChains()
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(hotelChains)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -84,16 +84,16 @@ func ListHotelCities(w http.ResponseWriter, r *http.Request) {
 	cities, err = ListCities()
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(cities)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }

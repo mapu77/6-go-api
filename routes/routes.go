@@ -24,7 +24,7 @@ var routes = Routes{
 		"GET",
 		"/",
 		func(w http.ResponseWriter, r *http.Request) {
-			http.Redirect(w, r, "https://app.swaggerhub.com/apis/mapu77/ad-go-api/1.0.0", 303)
+			http.Redirect(w, r, "https://app.swaggerhub.com/apis/mapu77/ad-go-api/1.0.0", http.StatusSeeOther)
 		},
 	},
 	Route{

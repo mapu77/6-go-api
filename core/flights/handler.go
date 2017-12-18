@@ -12,17 +12,17 @@ func NewFlight(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&f)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if err != nil {
-		w.WriteHeader(400)
+		w.WriteHeader(http.StatusBadGateway)
 		return
 	}
 	var id = make(map[string]string)
 	id["id"], err = Persist(&f)
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	json.NewEncoder(w).Encode(id)
-	w.WriteHeader(201)
+	w.WriteHeader(http.StatusCreated)
 }
 
 func ListFlights(w http.ResponseWriter, r *http.Request) {
@@ -48,17 +48,17 @@ func ListFlights(w http.ResponseWriter, r *http.Request) {
 	flights, err = ListBy(code, company, departureCity, arrivalCity)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(flights)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -68,17 +68,17 @@ func ListFlightDestinations(w http.ResponseWriter, r *http.Request) {
 	destinations, err = ListDestinations()
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(destinations)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -88,16 +88,16 @@ func ListFlightCompanies(w http.ResponseWriter, r *http.Request) {
 	companies, err = ListCompanies()
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	err = json.NewEncoder(w).Encode(companies)
 	if err != nil {
 		log.Fatal(err)
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
-		w.WriteHeader(200)
+		w.WriteHeader(http.StatusOK)
 	}
 }
