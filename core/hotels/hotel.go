@@ -41,7 +41,7 @@ func ListBy(name string, hotelChain string, city string) ([]Hotel, error) {
 	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB(dbName).C("flights")
+	c := session.DB(dbName).C("hotels")
 	var args = bson.M{}
 	if name != "" {
 		args["name"] = name
@@ -52,7 +52,7 @@ func ListBy(name string, hotelChain string, city string) ([]Hotel, error) {
 	if city != "" {
 		args["city"] = city
 	}
-	var flights []Hotel
-	err = c.Find(args).Sort("_id").All(&flights)
-	return flights, err
+	var hotels []Hotel
+	err = c.Find(args).Sort("_id").All(&hotels)
+	return hotels, err
 }
