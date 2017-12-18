@@ -6,10 +6,10 @@ import (
 )
 
 func ListDestinations() (*[]string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("flights")
+	c := session.DB(dbName).C("flights")
 	var arrivals []string
 	err = c.Find(nil).Distinct("arrival_city", &arrivals)
 	if err != nil {
@@ -39,10 +39,10 @@ func RemoveDuplicates(slice *[]string) {
 }
 
 func ListCompanies() (*[]string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("flights")
+	c := session.DB(dbName).C("flights")
 	var companies []string
 	err = c.Find(nil).Distinct("company", &companies)
 	if err != nil {

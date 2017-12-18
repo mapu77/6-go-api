@@ -19,10 +19,10 @@ type Flight struct {
 // Make a Flight persistent and return its unique identifier as a string.
 // If any error occurs, returns error code in err return value. It is nil otherwise.
 func Persist(f *Flight) (string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("flights")
+	c := session.DB(dbName).C("flights")
 	err = c.Insert(&f)
 	if err != nil {
 		log.Fatal(err)
@@ -37,10 +37,10 @@ func Persist(f *Flight) (string, error) {
 
 // Returns the flights matching the parameters, if any. Errors are returned in error second return value.
 func ListBy(code string, company string, departureCity string, arrivalCity string) (*[]Flight, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("flights")
+	c := session.DB(dbName).C("flights")
 	var args = bson.M{}
 	if code != "" {
 		args["code"] = code

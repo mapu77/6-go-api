@@ -20,10 +20,10 @@ type Hotel struct {
 // Make an Hotel persistent and return its unique identifier as a string.
 // If any error occurs, returns error code in err return value. It is nil otherwise.
 func Persist(f *Hotel) (string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("hotels")
+	c := session.DB(dbName).C("hotels")
 	err = c.Insert(&f)
 	if err != nil {
 		log.Fatal(err)
@@ -38,10 +38,10 @@ func Persist(f *Hotel) (string, error) {
 
 // Returns the hotels matching the parameters, if any. Errors are returned in error second return value.
 func ListBy(name string, hotelChain string, city string) ([]Hotel, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("flights")
+	c := session.DB(dbName).C("flights")
 	var args = bson.M{}
 	if name != "" {
 		args["name"] = name

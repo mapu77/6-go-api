@@ -6,10 +6,10 @@ import (
 )
 
 func ListChains() (*[]string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("hotels")
+	c := session.DB(dbName).C("hotels")
 	var hotelChains []string
 	err = c.Find(nil).Distinct("hotel_chain", &hotelChains)
 	if err != nil {
@@ -19,10 +19,10 @@ func ListChains() (*[]string, error) {
 }
 
 func ListCities() (*[]string, error) {
-	session, err := database.GetMongoDBSession()
+	session, dbName, err := database.GetMongoDBSession()
 	defer session.Close()
 
-	c := session.DB("ad-travel-agency").C("hotels")
+	c := session.DB(dbName).C("hotels")
 	var cities []string
 	err = c.Find(nil).Distinct("city", &cities)
 	if err != nil {
